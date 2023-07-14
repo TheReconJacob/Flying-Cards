@@ -36,9 +36,9 @@ export default async function handler(
         payment_method_types: ['card'],
         billing_address_collection: 'auto',
         shipping_address_collection: {
-          allowed_countries: ['US', 'CA'],
+          allowed_countries: [ 'GB', "CA", "AE", "IL", "SB", "AF", "IN", "SC", "AG", "IQ", "AO", "JM", "SG", "SH", "AR", "JO", "SI", "AU", "JP", "SL", "AW", "KE", "SN", "MX", "AZ", "KG", "SO", "BB", "KH", "SR", "BD", "KI", "ST", "BF", "KM", "SV", "BH", "KN", "SX", "BI", "KR", "TC","BJ","KW","TD", 'AD', 'BM', 'KY', 'TG', 'AI', 'BN', 'KZ', 'TH', 'AL', 'BO', 'LB', 'TJ', 'AM', 'BQ', 'LC', 'TL', 'AT', 'BR', 'LK', 'TM', 'BA', 'BS', 'LR', 'TN', 'BE', 'BT', 'LS', 'TO','BG','BW','LY','TR','BY','BZ', 'MA','TT','CH','CD','MG','TV','CY','CF','ML','TW','CZ','CG','MM', 'TZ','DE','CI','MN','UG','DK','CL','MO','UY','EE','CM','MQ', 'UZ','ES','CN','MR','VC','FI','CO','MS','VE','FO', 'CR','MU','VG','FR','CV','MV', 'VN','CW' ,'MW' ,'VU' ,'GI' ,'DJ' ,'MY' ,'WF' ,'GL' ,'DM' , 'MZ' ,'WS' ,'GR' ,'DO' ,'NA' ,'YE' ,'HR' ,'DZ' ,'NC' ,'ZA' , 'HU' ,'EC' ,'NE' ,'ZM' ,'IE' ,'EG' ,'NG' ,'ZW' , 'IS' ,'ER' ,'NI' ,  'IT' ,  'ET' ,  'NP', 'LI',  'FJ',  'NR', 'LT',  'FK',  'NZ', 'LU',  'GA',  'OM', 'LV',  'GD',  'PA', 'MD',  'GE',  'PE', 'ME',  'GF',  'PF', 'MK',  'GH',  'PG', 'MT',  'GM',  'PH', 'NL',  'GN', 'PK', 'NO', 'GP', 'PM', 'PL', 'GQ', 'PN', 'PT', 'GT', 'PY', 'RO', 'GW', 'QA', 'SE', 'GY', 'RE', 'SI', 'HK', 'RS', 'SK', 'HN', 'RU', 'SM', 'HT', 'RW', 'VA', 'ID', 'SA' ],
         },
-        line_items,
+         line_items,
         success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${req.headers.origin}/use-shopping-cart`,
         mode: hasSubscription ? 'subscription' : 'payment',
