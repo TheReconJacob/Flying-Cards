@@ -19,6 +19,17 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2022-08-01',
 })
 
+function calculate_shipping(quantity: number) {
+  // Calculate shipping cost based on quantity
+  let shipping_cost = 0;
+  if (quantity > 10) {
+    shipping_cost = 10;
+  } else {
+    shipping_cost = quantity;
+  }
+  return shipping_cost;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -27,6 +38,19 @@ export default async function handler(
     try {
       // Validate the cart details that were sent from the client.
       const line_items = validateCartItems(inventory as any, req.body)
+
+      // Add a line item for the shipping cost
+      line_items.push({
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: 'Shipping',
+          },
+          unit_amount: calculate_shipping(req.body.quantity) * 100,
+        },
+        quantity: 1,
+      })
+      
       const hasSubscription = line_items.find((item: any) => {
         return !!item.price_data.recurring
       })
