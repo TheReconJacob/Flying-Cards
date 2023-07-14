@@ -1,22 +1,23 @@
 const product = [
   {
-    name: 'Bananas',
-    description: 'Yummy yellow fruit',
-    id: 'sku_GBJ2Ep8246qeeT',
-    price: 400,
+    name: 'Pelipper | 159/193 | Uncommon | S&V - Paldea Evolved | Pokemon TCG',
+    description: '',
+    id: 'price_1NTsxcD0iqzNiW5Jhc4A2MEk',
+    price: 38,
     image:
-      'https://images.unsplash.com/photo-1574226516831-e1dff420e562?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=225&q=80',
-    attribution: 'Photo by Priscilla Du Preez on Unsplash',
-    currency: 'USD',
+      'https://cdn.chaoscards.co.uk/uploads/prod_img/2_220942_s.png?v=1686319727',
+    attribution: '',
+    currency: 'GBP',
   },
   {
-    name: 'Tangerines',
-    id: 'sku_GBJ2WWfMaGNC2Z',
-    price: 100,
+    name: 'Sudowoodo | 109/193 | Uncommon | Scarlet & Violet Paldea Evolved | Pokemon TCG',
+    description: '',
+    id: '',
+    price: 14,
     image:
-      'https://images.unsplash.com/photo-1482012792084-a0c3725f289f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=225&q=80',
-    attribution: 'Photo by Jonathan Pielmayer on Unsplash',
-    currency: 'USD',
+      'https://cdn.chaoscards.co.uk/uploads/prod_img/2_220793_s.png?v=1686319639',
+    attribution: '',
+    currency: 'GBP',
   },
 ]
 export default product
