@@ -4,6 +4,8 @@ import StripeTestCards from '../components/StripeTestCards'
 import { fetchPostJSON } from '../utils/api-helpers'
 import { useShoppingCart } from 'use-shopping-cart'
 
+import { useCartState } from './cartState'
+
 const CartSummary = () => {
   const [loading, setLoading] = useState(false)
   const [cartEmpty, setCartEmpty] = useState(true)
@@ -15,6 +17,15 @@ const CartSummary = () => {
     cartDetails,
     redirectToCheckout,
   } = useShoppingCart()
+
+  const { setCartCount } = useCartState()
+
+  useEffect(() => {
+    setCartEmpty(!cartCount)
+    if (cartCount !== undefined) {
+      setCartCount(cartCount)
+    }
+  }, [cartCount, setCartCount])  
 
   useEffect(() => setCartEmpty(!cartCount), [cartCount])
 

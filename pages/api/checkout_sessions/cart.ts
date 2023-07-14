@@ -22,10 +22,23 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 function calculate_shipping(quantity: number) {
   // Calculate shipping cost based on quantity
   let shipping_cost = 0;
-  if (quantity > 10) {
-    shipping_cost = 10;
-  } else {
-    shipping_cost = quantity;
+  if(quantity <= 21)
+  {
+    shipping_cost = 100;
+  }
+  if (quantity > 22 && quantity <= 55) {
+    shipping_cost = 210;
+  }
+  else if(quantity > 55 && quantity <= 108)
+  {
+    shipping_cost = 265;
+  }
+  else if(quantity > 108 && quantity < 159)
+  {
+    shipping_cost = 295;
+  }
+  else {
+    shipping_cost = 375;
   }
   return shipping_cost;
 }
@@ -36,6 +49,7 @@ export default async function handler(
 ) {
   if (req.method === 'POST') {
     try {
+      // Validate the cart details that were sent from the client.
       // Validate the cart details that were sent from the client.
       const line_items = validateCartItems(inventory as any, req.body)
 
@@ -50,7 +64,7 @@ export default async function handler(
         },
         quantity: 1,
       })
-      
+
       const hasSubscription = line_items.find((item: any) => {
         return !!item.price_data.recurring
       })

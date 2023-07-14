@@ -8,11 +8,15 @@ import { fetchPostJSON } from '../utils/api-helpers'
 import { formatAmountForDisplay } from '../utils/stripe-helpers'
 import * as config from '../config'
 
+import { useCartState } from './cartState'
+
 const CheckoutForm = () => {
   const [loading, setLoading] = useState(false)
   const [input, setInput] = useState({
     customDonation: Math.round(config.MAX_AMOUNT / config.AMOUNT_STEP),
   })
+
+  const { cartCount } = useCartState()
 
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) =>
     setInput({
@@ -26,6 +30,7 @@ const CheckoutForm = () => {
     // Create a Checkout Session.
     const response = await fetchPostJSON('/api/checkout_sessions', {
       amount: input.customDonation,
+      quantity: cartCount,
     })
 
     if (response.statusCode === 500) {
