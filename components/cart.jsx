@@ -1,8 +1,6 @@
-import { loadStripe } from '@stripe/stripe-js';
+import CheckoutButton from './CheckoutButton';
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
-
-export default function Cart({ cartItems, onCheckout }) {
+export default function Cart({ cartItems }) {
   return (
     <div>
       <h2>Cart</h2>
@@ -13,9 +11,7 @@ export default function Cart({ cartItems, onCheckout }) {
           </li>
         ))}
       </ul>
-      <button onClick={onCheckout} disabled={cartItems.length === 0}>
-        Checkout
-      </button>
+      <CheckoutButton cartItems={cartItems} />
     </div>
   );
 }
