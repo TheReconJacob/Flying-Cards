@@ -1,7 +1,40 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+import Image from 'next/image';
+import styles from './page.module.css';
+import Cart from '../components/cart';
+import { loadStripe } from '@stripe/stripe-js';
 
 export default function Home() {
+  const cartItems = [
+    { id: 'prod_123', quantity: 1 },
+    { id: 'prod_456', quantity: 2 }
+  ];
+
+  const handleCheckout = async () => {
+    const stripePromise = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+    const stripe = await stripePromise;
+
+    try {
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ cartItems })
+      });
+      const session = await response.json();
+
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id
+      });
+
+      if (result.error) {
+        console.error(result.error.message);
+      }
+    } catch (error) {
+      console.error('Error during checkout:', error);
+    }
+  };
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
@@ -89,7 +122,10 @@ export default function Home() {
             Instantly deploy your Next.js site to a shareable URL with Vercel.
           </p>
         </a>
+
+        <h2>Cart</h2>
+        <Cart cartItems={cartItems} onCheckout={handleCheckout} />
       </div>
     </main>
-  )
+  );
 }

@@ -1,30 +1,26 @@
+import { useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY);
-
 export default function Cart({ cartItems }) {
+  useEffect(() => {
+    const initializeStripe = async () => {
+      const stripePromise = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+      // Perform any client-specific initialization here
+    };
+
+    initializeStripe();
+  }, []);
+
   const handleCheckout = async () => {
-    const stripe = await stripePromise;
-    const response = await fetch('/api/create-checkout-session', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ cartItems })
-    });
-    const session = await response.json();
-    const result = await stripe.redirectToCheckout({
-      sessionId: session.id
-    });
-    if (result.error) {
-      console.error(result.error.message);
+    if (typeof window === 'undefined') {
+      console.error('Cannot handle checkout on the server.');
+      return;
     }
+
+    // Handle checkout logic here
   };
 
   return (
-    <div>
-      {/* Display cart items here */}
-      <button onClick={handleCheckout}>Checkout</button>
-    </div>
+    // Cart component JSX code
   );
 }
