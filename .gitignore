@@ -1,35 +1,41 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
+.env
 .DS_Store
-*.pem
+.vscode/*
+!.vscode/extensions.json
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Ignore dotnet build files
+**/Debug/**
+**/project-cache/**
+**/.vs/**
+**/obj/**
 
-# local env files
-.env*.local
+# Dependencies
+node_modules
+package-lock.json
+yarn.lock
+!/yarn.lock
+composer.lock
 
-# vercel
-.vercel
+# Ruby files
+Gemfile.lock
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# Python files
+__pycache__
+env
+venv
+
+# PHP files
+vendor
+logs
+
+# Java files
+.settings
+target/
+.classpath
+.factorypath
+.project
+.secrets
+
+# .NET files
+**/dotnet/bin/
+**/dotnet/obj/ 
