@@ -1,12 +1,19 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+import Image from 'next/image';
+import styles from './page.module.css';
+import Cart from '../components/Cart';
 
 export default function Home() {
+  // Replace this with your own logic to get the items in the user's cart
+  const cartItems = [
+    { id: 'prod_123', quantity: 1 },
+    { id: 'prod_456', quantity: 2 }
+  ];
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
         <p>
-          Get started by editing&nbsp;
+          Get started by editing 
           <code className={styles.code}>app/page.js</code>
         </p>
         <div>
@@ -47,7 +54,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2>
-            Docs <span>-&gt;</span>
+            Docs <span>&gt;</span>
           </h2>
           <p>Find in-depth information about Next.js features and API.</p>
         </a>
@@ -59,9 +66,9 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2>
-            Learn <span>-&gt;</span>
+            Learn <span>&gt;</span>
           </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
+          <p>Learn about Next.js in an interactive course with quizzes!</p>
         </a>
 
         <a
@@ -71,7 +78,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2>
-            Templates <span>-&gt;</span>
+            Templates <span>&gt;</span>
           </h2>
           <p>Explore the Next.js 13 playground.</p>
         </a>
@@ -83,13 +90,17 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2>
-            Deploy <span>-&gt;</span>
+            Deploy <span>&gt;</span>
           </h2>
           <p>
             Instantly deploy your Next.js site to a shareable URL with Vercel.
           </p>
         </a>
+
+        {/* Add the Cart component here */}
+        <h2>Cart</h2>
+        <Cart cartItems={cartItems} />
       </div>
     </main>
-  )
+  );
 }
