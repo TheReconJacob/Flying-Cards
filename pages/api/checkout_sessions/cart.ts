@@ -19,26 +19,47 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2022-08-01',
 })
 
-function calculate_shipping(quantity: number) {
-  // Calculate shipping cost based on quantity
+function calculate_shipping(quantity: number, country: string) {
+  // Calculate shipping cost based on quantity and country
   let shipping_cost = 0;
-  if(quantity <= 21)
-  {
-    shipping_cost = 1.00;
-  }
-  else if (quantity >= 22 && quantity <= 55) {
-    shipping_cost = 2.10;
-  }
-  else if(quantity > 55 && quantity <= 108)
-  {
-    shipping_cost = 2.65;
-  }
-  else if(quantity > 108 && quantity <= 159)
-  {
-    shipping_cost = 2.95;
-  }
-  else {
-    shipping_cost = 3.75;
+  if (country === 'GB') {
+    if(quantity <= 21)
+    {
+      shipping_cost = 1.00;
+    }
+    else if (quantity >= 22 && quantity <= 55) {
+      shipping_cost = 2.10;
+    }
+    else if(quantity > 55 && quantity <= 108)
+    {
+      shipping_cost = 2.65;
+    }
+    else if(quantity > 108 && quantity <= 159)
+    {
+      shipping_cost = 2.95;
+    }
+    else {
+      shipping_cost = 3.75;
+    }
+  } else {
+    if(quantity <= 21)
+    {
+      shipping_cost = 5.00;
+    }
+    else if (quantity >= 22 && quantity <= 55) {
+      shipping_cost = 7.00;
+    }
+    else if(quantity > 55 && quantity <= 108)
+    {
+      shipping_cost = 9.00;
+    }
+    else if(quantity > 108 && quantity <= 159)
+    {
+      shipping_cost = 11.00;
+    }
+    else {
+      shipping_cost = 13.00;
+    }
   }
   return shipping_cost;
 }
@@ -52,6 +73,9 @@ export default async function handler(
       // Validate the cart details that were sent from the client.
       const line_items = validateCartItems(inventory as any, req.body.cartDetails)
 
+      // Calculate shipping cost based on quantity and country
+      const shipping_cost = calculate_shipping(req.body.quantity, req.body.country)
+
       // Add a line item for the shipping cost
       line_items.push({
         price_data: {
@@ -59,7 +83,7 @@ export default async function handler(
           product_data: {
             name: 'Shipping',
           },
-          unit_amount: calculate_shipping(req.body.quantity) * 100,
+          unit_amount: shipping_cost * 100,
         },
         quantity: 1,
       })
@@ -73,9 +97,9 @@ export default async function handler(
         payment_method_types: ['card'],
         billing_address_collection: 'auto',
         shipping_address_collection: {
-          allowed_countries: [ 'GB', "CA", "AE", "IL", "SB", "AF", "IN", "SC", "AG", "IQ", "AO", "JM", "SG", "SH", "AR", "JO", "SI", "AU", "JP", "SL", "AW", "KE", "SN", "MX", "AZ", "KG", "SO", "BB", "KH", "SR", "BD", "KI", "ST", "BF", "KM", "SV", "BH", "KN", "SX", "BI", "KR", "TC","BJ","KW","TD", 'AD', 'BM', 'KY', 'TG', 'AI', 'BN', 'KZ', 'TH', 'AL', 'BO', 'LB', 'TJ', 'AM', 'BQ', 'LC', 'TL', 'AT', 'BR', 'LK', 'TM', 'BA', 'BS', 'LR', 'TN', 'BE', 'BT', 'LS', 'TO','BG','BW','LY','TR','BY','BZ', 'MA','TT','CH','CD','MG','TV','CY','CF','ML','TW','CZ','CG','MM', 'TZ','DE','CI','MN','UG','DK','CL','MO','UY','EE','CM','MQ', 'UZ','ES','CN','MR','VC','FI','CO','MS','VE','FO', 'CR','MU','VG','FR','CV','MV', 'VN','CW' ,'MW' ,'VU' ,'GI' ,'DJ' ,'MY' ,'WF' ,'GL' ,'DM' , 'MZ' ,'WS' ,'GR' ,'DO' ,'NA' ,'YE' ,'HR' ,'DZ' ,'NC' ,'ZA' , 'HU' ,'EC' ,'NE' ,'ZM' ,'IE' ,'EG' ,'NG' ,'ZW' , 'IS' ,'ER' ,'NI' ,  'IT' ,  'ET' ,  'NP', 'LI',  'FJ',  'NR', 'LT',  'FK',  'NZ', 'LU',  'GA',  'OM', 'LV',  'GD',  'PA', 'MD',  'GE',  'PE', 'ME',  'GF',  'PF', 'MK',  'GH',  'PG', 'MT',  'GM',  'PH', 'NL',  'GN', 'PK', 'NO', 'GP', 'PM', 'PL', 'GQ', 'PN', 'PT', 'GT', 'PY', 'RO', 'GW', 'QA', 'SE', 'GY', 'RE', 'SI', 'HK', 'RS', 'SK', 'HN', 'RU', 'SM', 'HT', 'RW', 'VA', 'ID', 'SA' ],
+          allowed_countries: [req.body.country],
         },
-         line_items,
+        line_items,
         success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${req.headers.origin}/use-shopping-cart`,
         mode: hasSubscription ? 'subscription' : 'payment',
@@ -87,9 +111,7 @@ export default async function handler(
       res.status(200).json(checkoutSession)
     } catch (err) {
       console.log(err)
-      const errorMessage =
-        err instanceof Error ? err.message : 'Internal server error'
-      res.status(500).json({ statusCode: 500, message: errorMessage })
+      res.status(500).json({ statusCode: 500, message: (err as Error).message })
     }
   } else {
     res.setHeader('Allow', 'POST')
