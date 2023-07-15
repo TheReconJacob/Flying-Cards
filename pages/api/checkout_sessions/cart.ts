@@ -54,19 +54,17 @@ export default async function handler(
       const line_items = validateCartItems(inventory as any, req.body)
 
       // Add a line item for the shipping cost
-      // Add a line item for the shipping cost
-      const totalQuantity = line_items.reduce((total: number, item) => total + item.quantity, 0);
-    line_items.push({
-      price_data: {
-        currency: 'gbp',
-        product_data: {
-          name: 'Shipping',
+      line_items.push({
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: 'Shipping',
+          },
+          unit_amount: calculate_shipping(req.body.quantity) * 100,
         },
-        unit_amount: calculate_shipping(totalQuantity) * 100,
-      },
-      quantity: 1,
-    })
-      
+        quantity: 1,
+      })
+
       const hasSubscription = line_items.find((item: any) => {
         return !!item.price_data.recurring
       })
