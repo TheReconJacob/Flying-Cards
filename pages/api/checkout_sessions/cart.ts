@@ -56,7 +56,7 @@ export default async function handler(
       // Add a line item for the shipping cost
       line_items.push({
         price_data: {
-          currency: 'usd',
+          currency: 'gbp',
           product_data: {
             name: 'Shipping',
           },
