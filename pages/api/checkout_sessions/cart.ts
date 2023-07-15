@@ -24,21 +24,21 @@ function calculate_shipping(quantity: number) {
   let shipping_cost = 0;
   if(quantity <= 21)
   {
-    shipping_cost = 100;
+    shipping_cost = 1.00;
   }
-  if (quantity > 22 && quantity <= 55) {
-    shipping_cost = 210;
+  if (quantity >= 22 && quantity <= 55) {
+    shipping_cost = 2.10;
   }
   else if(quantity > 55 && quantity <= 108)
   {
-    shipping_cost = 265;
+    shipping_cost = 2.65;
   }
-  else if(quantity > 108 && quantity < 159)
+  else if(quantity > 108 && quantity <= 159)
   {
-    shipping_cost = 295;
+    shipping_cost = 2.95;
   }
   else {
-    shipping_cost = 375;
+    shipping_cost = 3.75;
   }
   return shipping_cost;
 }
