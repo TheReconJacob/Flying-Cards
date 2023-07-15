@@ -38,7 +38,7 @@ const CartSummary = () => {
 
     const response = await fetchPostJSON(
       '/api/checkout_sessions/cart',
-      cartDetails
+      {cartDetails, quantity: cartCount}
     )
 
     if (response.statusCode > 399) {

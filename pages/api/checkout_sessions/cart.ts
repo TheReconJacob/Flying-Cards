@@ -26,7 +26,7 @@ function calculate_shipping(quantity: number) {
   {
     shipping_cost = 1.00;
   }
-  if (quantity >= 22 && quantity <= 55) {
+  else if (quantity >= 22 && quantity <= 55) {
     shipping_cost = 2.10;
   }
   else if(quantity > 55 && quantity <= 108)
@@ -50,8 +50,7 @@ export default async function handler(
   if (req.method === 'POST') {
     try {
       // Validate the cart details that were sent from the client.
-      // Validate the cart details that were sent from the client.
-      const line_items = validateCartItems(inventory as any, req.body)
+      const line_items = validateCartItems(inventory as any, req.body.cartDetails)
 
       // Add a line item for the shipping cost
       line_items.push({
