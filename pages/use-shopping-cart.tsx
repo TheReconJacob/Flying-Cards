@@ -16,7 +16,7 @@ const DonatePage: NextPage = () => {
           hooks library.
         </p>
         <Cart>
-          <CartSummary />
+          <CartSummary productId={productId} />
           <Products />
         </Cart>
       </div>

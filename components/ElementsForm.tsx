@@ -1,4 +1,6 @@
 import React, { useState, FC } from 'react'
+import { useCartState } from './CartState'
+import products from './product'
 
 import CustomDonationInput from '../components/CustomDonationInput'
 import StripeTestCards from '../components/StripeTestCards'
@@ -29,6 +31,7 @@ const ElementsForm: FC<{
   const [errorMessage, setErrorMessage] = useState('')
   const stripe = useStripe()
   const elements = useElements()
+  const { cartState, stockState } = useCartState()
 
   const PaymentStatus = ({ status }: { status: string }) => {
     switch (status) {
@@ -136,6 +139,7 @@ const ElementsForm: FC<{
               }}
             />
           </div>
+          <PaymentElement className="elements-style" />
         </fieldset>
         <button
           className="elements-style-background"
@@ -146,9 +150,22 @@ const ElementsForm: FC<{
           }
         >
           Donate {formatAmountForDisplay(input.customDonation, config.CURRENCY)}
+        <button type="submit" disabled={!stripe}>
+          Pay {formatAmountForDisplay(input.customDonation, config.CURRENCY)}
         </button>
       </form>
       <PaymentStatus status={payment.status} />
+
+      {/* Render the available quantity of each product */}
+      <h2>Available products:</h2>
+      <ul>
+        {products.map((product) => (
+          <li key={product.id}>
+            {product.name} - Available quantity: {stockState[product.id] || 0}
+          </li>
+        ))}
+      </ul>
+
       <PrintObject content={payment} />
     </>
   )

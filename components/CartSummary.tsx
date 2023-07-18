@@ -6,7 +6,11 @@ import { useShoppingCart } from 'use-shopping-cart'
 
 import { useCartState } from './cartState'
 
-const CartSummary = () => {
+type CartSummaryProps = {
+  productId: string;
+};
+
+const CartSummary: React.FC<CartSummaryProps> = ({ productId }) => {
   const [loading, setLoading] = useState(false)
   const [cartEmpty, setCartEmpty] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
@@ -18,7 +22,7 @@ const CartSummary = () => {
     redirectToCheckout,
   } = useShoppingCart()
 
-  const { setCartCount } = useCartState()
+  const { setCartState } = useCartState()
 
   // State for the shipping country
   const [shippingAddressCountry, setShippingAddressCountry] = useState('')
@@ -26,9 +30,9 @@ const CartSummary = () => {
   useEffect(() => {
     setCartEmpty(!cartCount)
     if (cartCount !== undefined) {
-      setCartCount(cartCount)
+      setCartState(productId, cartCount)
     }
-  }, [cartCount, setCartCount])  
+  }, [cartCount, setCartState])  
 
   useEffect(() => setCartEmpty(!cartCount), [cartCount])
 

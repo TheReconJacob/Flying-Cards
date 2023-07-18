@@ -16,7 +16,8 @@ const CheckoutForm = () => {
     customDonation: Math.round(config.MAX_AMOUNT / config.AMOUNT_STEP),
   })
 
-  const { cartCount } = useCartState()
+  const { cartState } = useCartState()
+  const cartCount = Object.values(cartState).reduce((total, item) => total + item.quantity, 0)
 
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) =>
     setInput({
